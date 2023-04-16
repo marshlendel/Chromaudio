@@ -1,9 +1,8 @@
 import {FaPlay, FaAngleLeft, FaAngleRight} from 'react-icons/fa'
 
-const SongControls = () => {
+const SongPlayer = () => {
     return (
         <div className="song-controls">
-            <h1>Controls</h1>
             <div className="time-control">
                 <p>Start Time</p>
                 <input type="range" name="" id="" />
@@ -18,4 +17,4 @@ const SongControls = () => {
     )
 }
 
-export default SongControls
+export default SongPlayer

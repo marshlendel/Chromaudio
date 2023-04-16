@@ -1,11 +1,12 @@
 import SongDisplay from "./components/SongDisplay";
-import SongControls from "./components/SongControls";
+import SongPlayer from "./components/SongPlayer";
+import './styles/App.scss'
 
 function App() {
   return (
     <div className="App">
      <SongDisplay />
-     <SongControls />
+     <SongPlayer />
     </div>
   );
 }
