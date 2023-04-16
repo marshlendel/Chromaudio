@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { FaPlay, FaPause, FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 const SongPlayer = ({ currentSong, isPlaying, setIsPlaying }) => {
@@ -34,12 +34,32 @@ const SongPlayer = ({ currentSong, isPlaying, setIsPlaying }) => {
   };
 
   const handleInputChange = (e) => {
+    let audio = audioRef.current;
     setSongInfo({
       ...songInfo,
       currentTime: e.target.value,
     });
+    if (isPlaying) {
+      audio.pause();
+    }
     audioRef.current.currentTime = e.target.value;
   };
+
+  useEffect(() => {
+    const audioElement = audioRef.current;
+    audioElement.addEventListener("ended", () => {
+      audioElement.currentTime = 0;
+      setIsPlaying(false);
+      audioElement.pause();
+    });
+    return () => {
+      audioElement.removeEventListener("ended", () => {
+        audioElement.currentTime = 0;
+        setIsPlaying(false);
+        audioElement.pause();
+      });
+    };
+  }, [audioRef]);
 
   return (
     <div className="song-controls">
@@ -47,6 +67,7 @@ const SongPlayer = ({ currentSong, isPlaying, setIsPlaying }) => {
         <p>{getTime(songInfo.currentTime)}</p>
         <input
           onChange={(e) => handleInputChange(e)}
+          onMouseUp={() => isPlaying && audioRef.current.play()}
           type="range"
           name=""
           value={songInfo.currentTime}
