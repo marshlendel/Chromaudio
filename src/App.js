@@ -1,9 +1,11 @@
-import './App.css';
+import SongDisplay from "./components/SongDisplay";
+import SongControls from "./components/SongControls";
 
 function App() {
   return (
     <div className="App">
-     <h1>Music play</h1>
+     <SongDisplay />
+     <SongControls />
     </div>
   );
 }
