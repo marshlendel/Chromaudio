@@ -1,11 +1,12 @@
 
-const SongDisplay = () => {
+const SongDisplay = ({currentSong}) => {
+    const {name, cover, artist} = currentSong
 
     return (
         <div className="song-display-container">
-            <h1>Picture</h1>
-            <h1>Song Name</h1>
-            <h2>Artist</h2>
+            <img src={cover} />
+            <h2>{name}</h2>
+            <h3>{artist}</h3>
         </div>
     )
 }

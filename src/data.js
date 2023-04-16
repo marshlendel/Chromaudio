@@ -10,7 +10,7 @@ function musicData() {
         "https://drive.google.com/uc?export=download&id=1DtFNPMpg3Hml5Me8eWkSy-F4elceiIxB",
       color: ["#1599a1", "#eba7a9"],
       id: crypto.randomUUID(),
-      active: false,
+      active: true,
     },
     {
       name: "Beaver Creek",
@@ -20,7 +20,7 @@ function musicData() {
       audio: "https://mp3.chillhop.com/serve.php/?mp3=10075",
       color: ["#205950", "#2ab3bf"],
       id: crypto.randomUUID(),
-      active: true,
+      active: false,
     },
     {
       name: "Daylight",

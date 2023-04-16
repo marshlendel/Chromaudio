@@ -12,7 +12,7 @@
     
     input {
         width: 100%;
-        padding: 1rem 2rem;
+        
     }
 
     p {
@@ -29,5 +29,10 @@
 
     svg {
         cursor: pointer;
+        user-select: none;
+        transition: 0.2s ease-in;
+        &:hover {
+            color: rgb(54, 54, 54);
+        }
     }
 }
