@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { FaPlay, FaPause, FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
-const SongPlayer = ({ currentSong, isPlaying, setIsPlaying }) => {
+const SongPlayer = ({ currentSong, isPlaying, setIsPlaying, onPrevClick, onNextClick }) => {
   const { audio } = currentSong;
   const audioRef = useRef();
   const [isLifted, setIsLifted] = useState(false);
@@ -56,19 +56,18 @@ const SongPlayer = ({ currentSong, isPlaying, setIsPlaying }) => {
 
   useEffect(() => {
     const audioElement = audioRef.current;
-    audioElement.addEventListener("ended", () => {
-      audioElement.currentTime = 0;
-      setIsPlaying(false);
-      audioElement.pause();
-    });
+    audioElement.addEventListener("ended", onNextClick);
     return () => {
-      audioElement.removeEventListener("ended", () => {
-        audioElement.currentTime = 0;
-        setIsPlaying(false);
-        audioElement.pause();
-      });
+      const audioElement = audioRef.current;
+      audioElement.removeEventListener("ended", onNextClick);
     };
-  }, [audioRef]);
+  }, [currentSong]);
+
+  useEffect(() => {
+    if (isPlaying) {
+      audioRef.current.play();
+    }
+  }, [songInfo]);
 
   return (
     <div className="song-controls">
@@ -89,13 +88,16 @@ const SongPlayer = ({ currentSong, isPlaying, setIsPlaying }) => {
         <p>{getTime(songInfo.duration)}</p>
       </div>
       <div className="play-control">
-        <FaAngleLeft size="32px" />
+        <FaAngleLeft
+          onClick={() => onPrevClick({ songInfo, setSongInfo, audioRef })}
+          size="32px"
+        />
         {isPlaying ? (
           <FaPause onClick={handlePlayClick} size="32px" />
         ) : (
           <FaPlay onClick={handlePlayClick} size="32px" />
         )}
-        <FaAngleRight size="32px" />
+        <FaAngleRight onClick={onNextClick} size="32px" />
       </div>
       <audio
         onTimeUpdate={(e) => handleAudioPlayback(e)}

@@ -10,7 +10,7 @@ function musicData() {
         "https://drive.google.com/uc?export=download&id=1DtFNPMpg3Hml5Me8eWkSy-F4elceiIxB",
       color: ["#1599a1", "#eba7a9"],
       id: crypto.randomUUID(),
-      active: true,
+      active: false,
     },
     {
       name: "Keep Going",

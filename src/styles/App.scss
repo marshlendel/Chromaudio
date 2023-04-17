@@ -9,13 +9,17 @@ h1, h2, h3, h4, p {
     font-family: 'Montserrat', sans-serif;
 }
 
+h3, h4 {
+    font-weight: 400;
+}
+
 p {
     max-width: 63px;
     min-width: 63px;
 }
 
 .App {
-    margin-top: 7rem;
+    margin-top: 5rem;
 }
 @import './SongDisplay';
 @import './SongPlayer';
