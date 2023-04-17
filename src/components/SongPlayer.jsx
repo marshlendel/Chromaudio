@@ -1,7 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { FaPlay, FaPause, FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
-const SongPlayer = ({ currentSong, isPlaying, setIsPlaying, onPrevClick, onNextClick }) => {
+const SongPlayer = ({
+  currentSong,
+  isPlaying,
+  setIsPlaying,
+  onPrevClick,
+  onNextClick,
+}) => {
   const { audio } = currentSong;
   const audioRef = useRef();
   const [isLifted, setIsLifted] = useState(false);
@@ -15,7 +21,12 @@ const SongPlayer = ({ currentSong, isPlaying, setIsPlaying, onPrevClick, onNextC
     if (isPlaying) {
       audioRef.current.pause();
     } else {
-      audioRef.current.play();
+      const playPromise = audioRef.current.play();
+      if (playPromise !== "undefined") {
+        playPromise.then(() => {
+          audioRef.current.play();
+        });
+      }
     }
   };
 
@@ -65,7 +76,12 @@ const SongPlayer = ({ currentSong, isPlaying, setIsPlaying, onPrevClick, onNextC
 
   useEffect(() => {
     if (isPlaying) {
-      audioRef.current.play();
+      const playPromise = audioRef.current.play();
+      if (playPromise !== "undefined") {
+        playPromise.then(() => {
+          audioRef.current.play();
+        });
+      }
     }
   }, [songInfo]);
 

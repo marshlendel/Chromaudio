@@ -55,6 +55,7 @@ function App() {
     const index = songs.findIndex((element) => element.id === currentSong.id);
     setActiveSong(index);
   }, [currentSong]);
+  
   return (
     <div className="App">
       <Navbar toggleLibrary={toggleLibrary} setToggleLibrary={setToggleLibrary} />
