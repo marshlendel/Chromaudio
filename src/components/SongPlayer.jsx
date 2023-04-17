@@ -4,6 +4,7 @@ import { FaPlay, FaPause, FaAngleLeft, FaAngleRight } from "react-icons/fa";
 const SongPlayer = ({ currentSong, isPlaying, setIsPlaying }) => {
   const { audio } = currentSong;
   const audioRef = useRef();
+  const [isLifted, setIsLifted] = useState(false);
   const [songInfo, setSongInfo] = useState({
     duration: 0,
     currentTime: 0,
@@ -19,12 +20,16 @@ const SongPlayer = ({ currentSong, isPlaying, setIsPlaying }) => {
   };
 
   const handleAudioPlayback = (e) => {
-    const time = e.target.currentTime;
-    const duration = e.target.duration;
-    setSongInfo({
-      currentTime: time,
-      duration,
-    });
+    if (!isLifted) {
+      const time = e.target.currentTime;
+      const duration = e.target.duration;
+      setSongInfo((prevValue) => {
+        return {
+          currentTime: time,
+          duration: isNaN(duration) ? prevValue.duration : duration,
+        };
+      });
+    }
   };
 
   const getTime = (time) => {
@@ -34,14 +39,18 @@ const SongPlayer = ({ currentSong, isPlaying, setIsPlaying }) => {
   };
 
   const handleInputChange = (e) => {
-    let audio = audioRef.current;
     setSongInfo({
       ...songInfo,
       currentTime: e.target.value,
     });
-    if (isPlaying) {
-      audio.pause();
-    }
+  };
+
+  const handleInputMousedown = (e) => {
+    setIsLifted(true);
+  };
+
+  const handleInputMouseup = (e) => {
+    setIsLifted(false);
     audioRef.current.currentTime = e.target.value;
   };
 
@@ -67,7 +76,8 @@ const SongPlayer = ({ currentSong, isPlaying, setIsPlaying }) => {
         <p>{getTime(songInfo.currentTime)}</p>
         <input
           onChange={(e) => handleInputChange(e)}
-          onMouseUp={() => isPlaying && audioRef.current.play()}
+          onMouseDown={(e) => handleInputMousedown(e)}
+          onMouseUp={handleInputMouseup}
           type="range"
           name=""
           value={songInfo.currentTime}
