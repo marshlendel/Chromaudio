@@ -14,6 +14,9 @@ p {
     min-width: 63px;
 }
 
+.App {
+    margin-top: 7rem;
+}
 @import './SongDisplay';
 @import './SongPlayer';
 @import './library';
