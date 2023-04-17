@@ -4,11 +4,13 @@ import SongPlayer from "./components/SongPlayer";
 import "./styles/App.scss";
 import musicData from "./data.js";
 import Library from "./components/Library";
+import Navbar from "./components/Nav";
 
 function App() {
   const [songs, setSongs] = useState(musicData());
   const [currentSong, setCurrentSong] = useState(songs[0]);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [toggleLibrary, setToggleLibrary] = useState(false)
 
   const handleSongClick = (songInfo) => {
     setCurrentSong(songInfo);
@@ -55,6 +57,7 @@ function App() {
   }, [currentSong]);
   return (
     <div className="App">
+      <Navbar toggleLibrary={toggleLibrary} setToggleLibrary={setToggleLibrary} />
       <SongDisplay currentSong={currentSong} />
       <SongPlayer
         onPrevClick={handlePrevClick}
@@ -63,7 +66,7 @@ function App() {
         setIsPlaying={setIsPlaying}
         currentSong={currentSong}
       />
-      <Library onSongClick={handleSongClick} songs={songs} />
+      <Library toggleLibrary={toggleLibrary} onSongClick={handleSongClick} songs={songs} />
     </div>
   );
 }
