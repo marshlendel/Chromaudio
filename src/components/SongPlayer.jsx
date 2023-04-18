@@ -59,13 +59,15 @@ const SongPlayer = ({
   };
 
   const handleAudioPlayback = (e) => {
-    console.log("handle!");
     if (!isLifted) {
       const time =
         e.type === "loadedmetadata"
           ? localStorage.getItem("time")
           : e.target.currentTime;
       const duration = e.target.duration;
+      if (e.type === "loadedmetadata") {
+        audioRef.current.currentTime = time;
+      }
       setSongInfo((prevValue) => {
         return {
           currentTime: time,
