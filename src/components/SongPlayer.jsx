@@ -15,6 +15,7 @@ const SongPlayer = ({
     duration: 0,
     currentTime: 0,
   });
+  const [animationPercent, setAnimationPercent] = useState(0) 
 
   const handlePlayClick = () => {
     setIsPlaying((prevValue) => !prevValue);
@@ -66,15 +67,7 @@ const SongPlayer = ({
   };
 
   useEffect(() => {
-    const audioElement = audioRef.current;
-    audioElement.addEventListener("ended", onNextClick);
-    return () => {
-      const audioElement = audioRef.current;
-      audioElement.removeEventListener("ended", onNextClick);
-    };
-  }, [currentSong]);
-
-  useEffect(() => {
+    setAnimationPercent((songInfo.currentTime / songInfo.duration) * 100)
     if (isPlaying) {
       const playPromise = audioRef.current.play();
       if (playPromise !== "undefined") {
@@ -89,6 +82,7 @@ const SongPlayer = ({
     <div className="song-controls">
       <div className="time-control">
         <p>{getTime(songInfo.currentTime)}</p>
+        <div style={{background:  `linear-gradient(to right, ${currentSong.color[0]}, ${currentSong.color[1]} 70%)`}} className="track" >
         <input
           onChange={(e) => handleInputChange(e)}
           onMouseDown={(e) => handleInputMousedown(e)}
@@ -101,6 +95,8 @@ const SongPlayer = ({
           step=".01"
           id=""
         />
+        <div style={{transform: `translateX(${animationPercent}%)`}}className="track-animation"></div>
+        </div>
         <p>{getTime(songInfo.duration)}</p>
       </div>
       <div className="play-control">

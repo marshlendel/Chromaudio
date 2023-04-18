@@ -73,7 +73,7 @@ function musicData() {
         "https://chillhop.com/wp-content/uploads/2020/09/0255e8b8c74c90d4a27c594b3452b2daafae608d-1024x1024.jpg",
       artist: "Aso, Middle School, Aviino",
       audio: "https://mp3.chillhop.com/serve.php/?mp3=10074",
-      color: ["#205950", "#2ab3bf"],
+      color: ["#2ab3bf", "#205950"],
       id: crypto.randomUUID(),
       active: false,
     },
