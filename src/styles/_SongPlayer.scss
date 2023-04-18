@@ -1,70 +1,78 @@
 .song-controls {
-    min-height: 20vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  min-height: 20vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .time-control {
-    width: 50%;
-    display: flex;
-    margin-bottom: 1rem;
-    align-items: center;
-    
-    input {
-        width: 100%;
-        cursor: pointer;
-        -webkit-appearance: none;
-        background: transparent;
-    }
+  width: 50%;
+  display: flex;
+  margin-bottom: 1rem;
+  align-items: center;
 
-    input[type='range']:focus {
-        outline: none;
-    }
-    input[type='range']::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        height: 16px;
-        width: 16px;
-        
-    }
+  input {
+    width: 100%;
+    cursor: pointer;
+    -webkit-appearance: none;
+    background: transparent;
+  }
 
-    p {
-        padding: 1rem;
-    }
+  input[type="range"]:focus {
+    outline: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 16px;
+    width: 16px;
+  }
+
+  p {
+    padding: 1rem;
+  }
 }
 
 .track {
-    height: 1rem;
-    width: 100%;
-    position: relative;
-    border-radius: 1rem;
-    overflow: hidden;
+  height: 1rem;
+  width: 100%;
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
 }
 
 .track-animation {
-    background: rgb(204, 204, 204);
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transition: all 0.1s;
-    pointer-events: none;
+  background: rgb(204, 204, 204);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
 }
 
 .play-control {
-    width: 30%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
+  width: 30%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
 
-    svg {
-        cursor: pointer;
-        user-select: none;
-        transition: 0.2s ease-in;
-        &:hover {
-            color: rgb(54, 54, 54);
-        }
+  svg {
+    cursor: pointer;
+    user-select: none;
+    transition: 0.2s ease-in;
+    &:hover {
+      color: rgb(54, 54, 54);
     }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .time-control {
+    width: 90%;
+  }
+
+  .play-control {
+    width: 60%;
+  }
 }

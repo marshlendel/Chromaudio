@@ -16,6 +16,27 @@
   }
 }
 
+.lib-head {
+  display: flex;
+  align-items: center;
+  position: sticky;
+  background-color: white;
+  top: 0;
+  left: 0;
+
+  h2 {
+    flex-grow: 0.85;
+  }
+
+  span {
+    font-size: 1.25rem;
+    cursor: pointer;
+    user-select: none;
+    font-weight: bold;
+    padding: 0.5rem;
+  }
+}
+
 .open-library {
   transform: translateX(0);
   opacity: 1;
@@ -70,4 +91,10 @@
   background: rgba(155, 155, 155, 0.5);
   border-radius: 20px;
   border: transparent;
+}
+
+@media screen and (max-width: 768px) {
+  .library {
+    width: 100%;
+  }
 }

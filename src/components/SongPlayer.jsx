@@ -11,9 +11,12 @@ const SongPlayer = ({
   const { audio } = currentSong;
   const audioRef = useRef();
   const [isLifted, setIsLifted] = useState(false);
-  const [songInfo, setSongInfo] = useState({
-    duration: 0,
-    currentTime: 0,
+  const [songInfo, setSongInfo] = useState(() => {
+    const time = localStorage.getItem("time");
+    return {
+      duration: 0,
+      currentTime: time,
+    };
   });
   const [animationPercent, setAnimationPercent] = useState(0);
 
@@ -56,8 +59,12 @@ const SongPlayer = ({
   };
 
   const handleAudioPlayback = (e) => {
+    console.log("handle!");
     if (!isLifted) {
-      const time = e.target.currentTime;
+      const time =
+        e.type === "loadedmetadata"
+          ? localStorage.getItem("time")
+          : e.target.currentTime;
       const duration = e.target.duration;
       setSongInfo((prevValue) => {
         return {
@@ -106,6 +113,7 @@ const SongPlayer = ({
         });
       }
     }
+    localStorage.setItem("time", songInfo.currentTime);
   }, [songInfo]);
 
   return (
@@ -122,6 +130,8 @@ const SongPlayer = ({
             onChange={(e) => handleInputChange(e)}
             onMouseDown={(e) => handleInputMousedown(e)}
             onMouseUp={handleInputMouseup}
+            onTouchStart={(e) => handleInputMousedown(e)}
+            onTouchEnd={handleInputMouseup}
             type="range"
             name=""
             value={songInfo.currentTime}

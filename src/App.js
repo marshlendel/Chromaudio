@@ -8,9 +8,11 @@ import Navbar from "./components/Nav";
 
 function App() {
   const [songs, setSongs] = useState(musicData());
-  const [currentSong, setCurrentSong] = useState(songs[0]);
+  const [currentSong, setCurrentSong] = useState(() => {
+    return songs[localStorage.getItem("index")];
+  });
   const [isPlaying, setIsPlaying] = useState(false);
-  const [toggleLibrary, setToggleLibrary] = useState(false)
+  const [toggleLibrary, setToggleLibrary] = useState(false);
 
   const handleSongClick = (songInfo) => {
     setCurrentSong(songInfo);
@@ -27,16 +29,20 @@ function App() {
     );
   };
 
-  
-
   useEffect(() => {
-    const index = songs.findIndex((element) => element.id === currentSong.id);
-    setActiveSong(index);
+    (async function () {
+      const index = songs.findIndex((element) => element.id === currentSong.id);
+      await setActiveSong(index);
+      localStorage.setItem("index", index);
+    })();
   }, [currentSong]);
 
   return (
     <div className="App">
-      <Navbar toggleLibrary={toggleLibrary} setToggleLibrary={setToggleLibrary} />
+      <Navbar
+        toggleLibrary={toggleLibrary}
+        setToggleLibrary={setToggleLibrary}
+      />
       <SongDisplay currentSong={currentSong} />
       <SongPlayer
         songs={songs}
@@ -45,7 +51,12 @@ function App() {
         currentSong={currentSong}
         setCurrentSong={setCurrentSong}
       />
-      <Library toggleLibrary={toggleLibrary} onSongClick={handleSongClick} songs={songs} />
+      <Library
+        setToggleLibrary={setToggleLibrary}
+        toggleLibrary={toggleLibrary}
+        onSongClick={handleSongClick}
+        songs={songs}
+      />
     </div>
   );
 }
