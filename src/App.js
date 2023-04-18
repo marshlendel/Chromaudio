@@ -27,45 +27,23 @@ function App() {
     );
   };
 
-  const handlePrevClick = ({ setSongInfo, songInfo, audioRef }) => {
-    if (songInfo.currentTime >= 2) {
-      setSongInfo({
-        ...songInfo,
-        currentTime: 0,
-      });
-      audioRef.current.currentTime = 0;
-    } else {
-      const index = songs.findIndex((element) => element.id === currentSong.id);
-      if (index > 0) {
-        setCurrentSong(songs[index - 1]);
-      }
-    }
-  };
-
-  const handleNextClick = () => {
-    const index = songs.findIndex((element) => element.id === currentSong.id);
-    if (index === songs.length - 1) {
-      setCurrentSong(songs[0]);
-    } else {
-      setCurrentSong(songs[index + 1]);
-    }
-  };
+  
 
   useEffect(() => {
     const index = songs.findIndex((element) => element.id === currentSong.id);
     setActiveSong(index);
   }, [currentSong]);
-  
+
   return (
     <div className="App">
       <Navbar toggleLibrary={toggleLibrary} setToggleLibrary={setToggleLibrary} />
       <SongDisplay currentSong={currentSong} />
       <SongPlayer
-        onPrevClick={handlePrevClick}
-        onNextClick={handleNextClick}
+        songs={songs}
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
         currentSong={currentSong}
+        setCurrentSong={setCurrentSong}
       />
       <Library toggleLibrary={toggleLibrary} onSongClick={handleSongClick} songs={songs} />
     </div>

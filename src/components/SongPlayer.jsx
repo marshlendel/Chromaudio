@@ -3,10 +3,10 @@ import { FaPlay, FaPause, FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 const SongPlayer = ({
   currentSong,
+  setCurrentSong,
   isPlaying,
   setIsPlaying,
-  onPrevClick,
-  onNextClick,
+  songs,
 }) => {
   const { audio } = currentSong;
   const audioRef = useRef();
@@ -15,7 +15,7 @@ const SongPlayer = ({
     duration: 0,
     currentTime: 0,
   });
-  const [animationPercent, setAnimationPercent] = useState(0) 
+  const [animationPercent, setAnimationPercent] = useState(0);
 
   const handlePlayClick = () => {
     setIsPlaying((prevValue) => !prevValue);
@@ -28,6 +28,30 @@ const SongPlayer = ({
           audioRef.current.play();
         });
       }
+    }
+  };
+
+  const handlePrevClick = ({ setSongInfo, songInfo, audioRef }) => {
+    if (songInfo.currentTime >= 2) {
+      setSongInfo({
+        ...songInfo,
+        currentTime: 0,
+      });
+      audioRef.current.currentTime = 0;
+    } else {
+      const index = songs.findIndex((element) => element.id === currentSong.id);
+      if (index > 0) {
+        setCurrentSong(songs[index - 1]);
+      }
+    }
+  };
+
+  const handleNextClick = () => {
+    const index = songs.findIndex((element) => element.id === currentSong.id);
+    if (index === songs.length - 1) {
+      setCurrentSong(songs[0]);
+    } else {
+      setCurrentSong(songs[index + 1]);
     }
   };
 
@@ -66,8 +90,14 @@ const SongPlayer = ({
     audioRef.current.currentTime = e.target.value;
   };
 
+  const handleSongEnded = async () => {
+    const index = songs.findIndex((element) => element.id === currentSong.id);
+
+    await setCurrentSong(songs[index + 1]);
+  };
+
   useEffect(() => {
-    setAnimationPercent((songInfo.currentTime / songInfo.duration) * 100)
+    setAnimationPercent((songInfo.currentTime / songInfo.duration) * 100);
     if (isPlaying) {
       const playPromise = audioRef.current.play();
       if (playPromise !== "undefined") {
@@ -82,26 +112,34 @@ const SongPlayer = ({
     <div className="song-controls">
       <div className="time-control">
         <p>{getTime(songInfo.currentTime)}</p>
-        <div style={{background:  `linear-gradient(to right, ${currentSong.color[0]}, ${currentSong.color[1]} 70%)`}} className="track" >
-        <input
-          onChange={(e) => handleInputChange(e)}
-          onMouseDown={(e) => handleInputMousedown(e)}
-          onMouseUp={handleInputMouseup}
-          type="range"
-          name=""
-          value={songInfo.currentTime}
-          min={0}
-          max={songInfo.duration}
-          step=".01"
-          id=""
-        />
-        <div style={{transform: `translateX(${animationPercent}%)`}}className="track-animation"></div>
+        <div
+          style={{
+            background: `linear-gradient(to right, ${currentSong.color[0]}, ${currentSong.color[1]} 70%)`,
+          }}
+          className="track"
+        >
+          <input
+            onChange={(e) => handleInputChange(e)}
+            onMouseDown={(e) => handleInputMousedown(e)}
+            onMouseUp={handleInputMouseup}
+            type="range"
+            name=""
+            value={songInfo.currentTime}
+            min={0}
+            max={songInfo.duration}
+            step=".01"
+            id=""
+          />
+          <div
+            style={{ transform: `translateX(${animationPercent}%)` }}
+            className="track-animation"
+          ></div>
         </div>
         <p>{getTime(songInfo.duration)}</p>
       </div>
       <div className="play-control">
         <FaAngleLeft
-          onClick={() => onPrevClick({ songInfo, setSongInfo, audioRef })}
+          onClick={() => handlePrevClick({ songInfo, setSongInfo, audioRef })}
           size="32px"
         />
         {isPlaying ? (
@@ -109,13 +147,14 @@ const SongPlayer = ({
         ) : (
           <FaPlay onClick={handlePlayClick} size="32px" />
         )}
-        <FaAngleRight onClick={onNextClick} size="32px" />
+        <FaAngleRight onClick={handleNextClick} size="32px" />
       </div>
       <audio
         onTimeUpdate={(e) => handleAudioPlayback(e)}
         onLoadedMetadata={(e) => handleAudioPlayback(e)}
         ref={audioRef}
         src={audio}
+        onEnded={handleSongEnded}
       ></audio>
     </div>
   );
