@@ -38,7 +38,7 @@ function App() {
   }, [currentSong]);
 
   return (
-    <div className="App">
+    <div className={`App ${toggleLibrary ? 'library-active' : ''}`}>
       <Navbar
         toggleLibrary={toggleLibrary}
         setToggleLibrary={setToggleLibrary}
