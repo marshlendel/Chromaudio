@@ -13,6 +13,7 @@ const SongPlayer = ({
   const [isLoaded, setisLoaded] = useState(false);
   const [isLifted, setIsLifted] = useState(false);
   const [songInfo, setSongInfo] = useState(() => {
+    console.log('use state initial lsetup!')
     const time = localStorage.getItem("time")
       ? localStorage.getItem("time")
       : 0;
@@ -120,7 +121,7 @@ const SongPlayer = ({
   };
 
   useEffect(() => {
-    console.log('song info changed!')
+    console.log('song info changed!', songInfo.currentTime, audioRef.current.currentTime, 'this is audioRef <')
     setAnimationPercent((songInfo.currentTime / songInfo.duration) * 100);
     localStorage.setItem("time", songInfo.currentTime);
     if (isPlaying) {
