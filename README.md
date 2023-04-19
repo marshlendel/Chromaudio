@@ -20,6 +20,11 @@ Chromaudio is a minimalistic music playing app that plays a hard-coded list of 7
 - React
 - SASS
 
+## Notes and future improvements
+- While the design is responsive, some playback features behave finicky on mobile
+- Add a search feature in library
+- Add volume control
+
 ## Credits
 
 Chromaudio was developed by Marshall Brown for the purpose of learning and practicing web development skills. 
