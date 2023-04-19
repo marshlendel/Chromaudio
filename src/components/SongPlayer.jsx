@@ -55,6 +55,10 @@ const SongPlayer = ({
       const index = songs.findIndex((element) => element.id === currentSong.id);
       if (index > 0) {
         setCurrentSong(songs[index - 1]);
+        setSongInfo({
+          ...songInfo,
+          currentTime: 0,
+        });
         setisLoaded(false)
       }
     }
@@ -69,7 +73,11 @@ const SongPlayer = ({
         setCurrentSong(songs[index + 1]);
         setisLoaded(false)
         audioRef.current.currentTime = 0;
-        console.log('currentime changed to', audioRef.current.currentTime)
+        setSongInfo({
+          ...songInfo,
+          currentTime: 0,
+        });
+        console.log('songinfo.currentTime changed to', songInfo.currentTime)
       }
   };
 
@@ -86,6 +94,7 @@ const SongPlayer = ({
       }
       setSongInfo((prevValue) => {
         return {
+          ...songInfo,
           currentTime: time,
           duration: isNaN(duration) ? prevValue.duration : duration,
         };
