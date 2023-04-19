@@ -68,6 +68,8 @@ const SongPlayer = ({
       } else {
         setCurrentSong(songs[index + 1]);
         setisLoaded(false)
+        audioRef.current.currentTime = 0;
+        console.log('currentime changed to', audioRef.current.currentTime)
       }
   };
 
@@ -121,7 +123,6 @@ const SongPlayer = ({
   };
 
   useEffect(() => {
-    console.log('song info changed!', songInfo.currentTime, audioRef.current.currentTime, 'this is audioRef <')
     setAnimationPercent((songInfo.currentTime / songInfo.duration) * 100);
     localStorage.setItem("time", songInfo.currentTime);
     if (isPlaying) {
