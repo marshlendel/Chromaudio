@@ -15,8 +15,13 @@ Chromaudio is a minimalistic music playing app that plays a hard-coded list of 7
 - Switch between tracks in the playlist by clicking on the library
 - Save current song and current time using local storage
 
-
 ## Technologies Used
 
 - React
 - SASS
+
+## Credits
+
+Chromaudio was developed by Marshall Brown for the purpose of learning and practicing web development skills. 
+
+
