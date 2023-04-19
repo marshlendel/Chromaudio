@@ -17,7 +17,7 @@ const SongPlayer = ({
       : 0;
     return {
       duration: 0,
-      currentTime: time,
+      currentTime: 0,
     };
   });
   const [animationPercent, setAnimationPercent] = useState(0);
@@ -68,7 +68,7 @@ const SongPlayer = ({
           : e.target.currentTime;
       const duration = e.target.duration;
       if (e.type === "loadedmetadata") {
-        audioRef.current.currentTime = time;
+        audioRef.current.currentTime = e.target.currentTime;
       }
       setSongInfo((prevValue) => {
         return {
