@@ -10,36 +10,28 @@ const SongPlayer = ({
 }) => {
   const { audio } = currentSong;
   const audioRef = useRef();
-  const [isLoaded, setisLoaded] = useState(false);
   const [isLifted, setIsLifted] = useState(false);
   const [songInfo, setSongInfo] = useState(() => {
-    console.log('use state initial lsetup!')
-    console.log(localStorage.getItem("time"))
-    const time = localStorage.getItem("time") ? localStorage.getItem("time") : 0
-    console.log('time variable', time)
+    const time = localStorage.getItem("time")
+      ? localStorage.getItem("time")
+      : 0;
     return {
       duration: 0,
-      currentTime: time
+      currentTime: 0,
     };
   });
   const [animationPercent, setAnimationPercent] = useState(0);
 
   const handlePlayClick = () => {
-    if (isLoaded) {
+    setIsPlaying((prevValue) => !prevValue);
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
       const playPromise = audioRef.current.play();
-      setIsPlaying((prevValue) => !prevValue);
-      if (isPlaying) {
-        if (playPromise !== "undefined") {
-          playPromise.then(() => {
-            audioRef.current.pause();
-          });
-        }
-      } else {
-        if (playPromise !== "undefined") {
-          playPromise.then(() => {
-            audioRef.current.play();
-          });
-        }
+      if (playPromise !== "undefined") {
+        playPromise.then(() => {
+          audioRef.current.play();
+        });
       }
     }
   };
@@ -55,46 +47,31 @@ const SongPlayer = ({
       const index = songs.findIndex((element) => element.id === currentSong.id);
       if (index > 0) {
         setCurrentSong(songs[index - 1]);
-        setSongInfo({
-          ...songInfo,
-          currentTime: 0,
-        });
-        setisLoaded(false)
       }
     }
   };
 
   const handleNextClick = () => {
-      const index = songs.findIndex((element) => element.id === currentSong.id);
-      if (index === songs.length - 1) {
-        setCurrentSong(songs[0]);
-        setisLoaded(false)
-      } else {
-        setCurrentSong(songs[index + 1]);
-        setisLoaded(false)
-        audioRef.current.currentTime = 0;
-        setSongInfo({
-          ...songInfo,
-          currentTime: 0,
-        });
-        console.log('songinfo.currentTime changed to', songInfo.currentTime)
-      }
+    const index = songs.findIndex((element) => element.id === currentSong.id);
+    if (index === songs.length - 1) {
+      setCurrentSong(songs[0]);
+    } else {
+      setCurrentSong(songs[index + 1]);
+    }
   };
 
-  const handleAudioPlayback = async (e) => {
+  const handleAudioPlayback = (e) => {
     if (!isLifted) {
-      const time =  await e.type === "loadedmetadata"
+      const time =
+        e.type === "loadedmetadata"
           ? localStorage.getItem("time")
-          : audioRef.current.currentTime;
+          : e.target.currentTime;
       const duration = e.target.duration;
       if (e.type === "loadedmetadata") {
-        setisLoaded(true);
-        console.log('loaded!')
-        audioRef.current.currentTime = time;
+        audioRef.current.currentTime = e.target.currentTime;
       }
       setSongInfo((prevValue) => {
         return {
-          ...songInfo,
           currentTime: time,
           duration: isNaN(duration) ? prevValue.duration : duration,
         };
@@ -108,13 +85,11 @@ const SongPlayer = ({
     );
   };
 
-  const handleInputChange = async (e) => {
-   await setSongInfo({
+  const handleInputChange = (e) => {
+    setSongInfo({
       ...songInfo,
       currentTime: e.target.value,
     });
-    audioRef.current.currentTime = songInfo.currentTime
-    console.log(audioRef.current.currentTime)
   };
 
   const handleInputMousedown = (e) => {
@@ -127,26 +102,22 @@ const SongPlayer = ({
   };
 
   const handleSongEnded = async () => {
-    console.log('song ended!')
     const index = songs.findIndex((element) => element.id === currentSong.id);
 
     await setCurrentSong(songs[index + 1]);
-    setisLoaded(false)
   };
 
   useEffect(() => {
     setAnimationPercent((songInfo.currentTime / songInfo.duration) * 100);
-    localStorage.setItem("time", songInfo.currentTime);
     if (isPlaying) {
       const playPromise = audioRef.current.play();
       if (playPromise !== "undefined") {
-        playPromise
-          .then(() => {
-            audioRef.current.play();
-          })
-          .catch((err) => console.error(err));
+        playPromise.then(() => {
+          audioRef.current.play();
+        });
       }
     }
+    localStorage.setItem("time", songInfo.currentTime);
   }, [songInfo]);
 
   return (
@@ -193,7 +164,6 @@ const SongPlayer = ({
         <FaAngleRight onClick={handleNextClick} size="32px" />
       </div>
       <audio
-      preload="auto"
         onTimeUpdate={(e) => handleAudioPlayback(e)}
         onLoadedMetadata={(e) => handleAudioPlayback(e)}
         ref={audioRef}
