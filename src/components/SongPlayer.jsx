@@ -127,6 +127,7 @@ const SongPlayer = ({
   };
 
   const handleSongEnded = async () => {
+    console.log('song ended!')
     const index = songs.findIndex((element) => element.id === currentSong.id);
 
     await setCurrentSong(songs[index + 1]);
