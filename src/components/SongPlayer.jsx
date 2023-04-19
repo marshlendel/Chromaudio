@@ -70,12 +70,11 @@ const SongPlayer = ({
       }
   };
 
-  const handleAudioPlayback = (e) => {
+  const handleAudioPlayback = async (e) => {
     if (!isLifted) {
-      const time =
-        e.type === "loadedmetadata"
+      const time =  await e.type === "loadedmetadata"
           ? localStorage.getItem("time")
-          : e.target.currentTime;
+          : audioRef.current.currentTime;
       const duration = e.target.duration;
       if (e.type === "loadedmetadata") {
         setisLoaded(true);
@@ -111,8 +110,6 @@ const SongPlayer = ({
   const handleInputMouseup = (e) => {
     setIsLifted(false);
     audioRef.current.currentTime = e.target.value;
-    console.log(`${audioRef.current}, is changed!`)
-    console.log('after time', audioRef.current.currentTime)
   };
 
   const handleSongEnded = async () => {
@@ -123,8 +120,9 @@ const SongPlayer = ({
   };
 
   useEffect(() => {
+    console.log('song info changed!')
     setAnimationPercent((songInfo.currentTime / songInfo.duration) * 100);
-    localStorage.setItem("time", audioRef.current.currentTime);
+    localStorage.setItem("time", songInfo.currentTime);
     if (isPlaying) {
       const playPromise = audioRef.current.play();
       if (playPromise !== "undefined") {
