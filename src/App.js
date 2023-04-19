@@ -9,7 +9,7 @@ import Navbar from "./components/Nav";
 function App() {
   const [songs, setSongs] = useState(musicData());
   const [currentSong, setCurrentSong] = useState(() => {
-    return songs[localStorage.getItem("index")];
+    return songs[localStorage.getItem("index")] || songs[0];
   });
   const [isPlaying, setIsPlaying] = useState(false);
   const [toggleLibrary, setToggleLibrary] = useState(false);

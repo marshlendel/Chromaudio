@@ -12,7 +12,9 @@ const SongPlayer = ({
   const audioRef = useRef();
   const [isLifted, setIsLifted] = useState(false);
   const [songInfo, setSongInfo] = useState(() => {
-    const time = localStorage.getItem("time");
+    const time = localStorage.getItem("time")
+      ? localStorage.getItem("time")
+      : 0;
     return {
       duration: 0,
       currentTime: time,
