@@ -97,6 +97,8 @@ const SongPlayer = ({
   };
 
   const handleInputChange = (e) => {
+    console.log(e.type, e.target)
+    console.log('we finna set!')
     setSongInfo({
       ...songInfo,
       currentTime: e.target.value,
