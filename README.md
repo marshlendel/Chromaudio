@@ -21,7 +21,7 @@ Chromaudio is a minimalistic music playing app that plays a hard-coded list of 7
 - SASS
 
 ## Notes and future improvements
-- While the design is responsive, some playback features behave finicky on mobile
+- While the design is responsive, some playback features behave finicky on mobile browsers
 - Add a search feature in library
 - Add volume control
 
