@@ -127,7 +127,7 @@ const SongPlayer = ({
 
   useEffect(() => {
     setAnimationPercent((songInfo.currentTime / songInfo.duration) * 100);
-    localStorage.setItem("time", audioRef.current.currentTime);
+    localStorage.setItem("time", songInfo.currentTime);
     if (isPlaying) {
       const playPromise = audioRef.current.play();
       if (playPromise !== "undefined") {
