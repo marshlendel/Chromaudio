@@ -1,7 +1,7 @@
 # Chromaudio
 
-![Chromaudio Demo](./screenshot.png)
-![Chromaudio Demo](./screenshot2.png)
+![Chromaudio UI](./screenshot.png)
+![Toggled Library](./Screenshot2.png)
 
 Chromaudio is a minimalistic music playing app that plays a hard-coded list of 7 songs. With Chromaudio, you can easily play and control music playback, skip songs, and switch between tracks in the playlist. 
 
