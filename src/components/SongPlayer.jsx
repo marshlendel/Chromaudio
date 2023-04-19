@@ -10,6 +10,7 @@ const SongPlayer = ({
 }) => {
   const { audio } = currentSong;
   const audioRef = useRef();
+  const [isLoaded, setisLoaded] = useState(false);
   const [isLifted, setIsLifted] = useState(false);
   const [songInfo, setSongInfo] = useState(() => {
     const time = localStorage.getItem("time")
@@ -17,21 +18,27 @@ const SongPlayer = ({
       : 0;
     return {
       duration: 0,
-      currentTime: 0,
+      currentTime: time,
     };
   });
   const [animationPercent, setAnimationPercent] = useState(0);
 
   const handlePlayClick = () => {
-    setIsPlaying((prevValue) => !prevValue);
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
+    if (isLoaded) {
       const playPromise = audioRef.current.play();
-      if (playPromise !== "undefined") {
-        playPromise.then(() => {
-          audioRef.current.play();
-        });
+      setIsPlaying((prevValue) => !prevValue);
+      if (isPlaying) {
+        if (playPromise !== "undefined") {
+          playPromise.then(() => {
+            audioRef.current.pause();
+          });
+        }
+      } else {
+        if (playPromise !== "undefined") {
+          playPromise.then(() => {
+            audioRef.current.play();
+          });
+        }
       }
     }
   };
@@ -47,17 +54,20 @@ const SongPlayer = ({
       const index = songs.findIndex((element) => element.id === currentSong.id);
       if (index > 0) {
         setCurrentSong(songs[index - 1]);
+        setisLoaded(false)
       }
     }
   };
 
   const handleNextClick = () => {
-    const index = songs.findIndex((element) => element.id === currentSong.id);
-    if (index === songs.length - 1) {
-      setCurrentSong(songs[0]);
-    } else {
-      setCurrentSong(songs[index + 1]);
-    }
+      const index = songs.findIndex((element) => element.id === currentSong.id);
+      if (index === songs.length - 1) {
+        setCurrentSong(songs[0]);
+        setisLoaded(false)
+      } else {
+        setCurrentSong(songs[index + 1]);
+        setisLoaded(false)
+      }
   };
 
   const handleAudioPlayback = (e) => {
@@ -68,7 +78,8 @@ const SongPlayer = ({
           : e.target.currentTime;
       const duration = e.target.duration;
       if (e.type === "loadedmetadata") {
-        audioRef.current.currentTime = e.target.currentTime;
+        setisLoaded(true);
+        audioRef.current.currentTime = time;
       }
       setSongInfo((prevValue) => {
         return {
@@ -105,6 +116,7 @@ const SongPlayer = ({
     const index = songs.findIndex((element) => element.id === currentSong.id);
 
     await setCurrentSong(songs[index + 1]);
+    setisLoaded(false)
   };
 
   useEffect(() => {
@@ -112,9 +124,11 @@ const SongPlayer = ({
     if (isPlaying) {
       const playPromise = audioRef.current.play();
       if (playPromise !== "undefined") {
-        playPromise.then(() => {
-          audioRef.current.play();
-        });
+        playPromise
+          .then(() => {
+            audioRef.current.play();
+          })
+          .catch((err) => console.error(err));
       }
     }
     localStorage.setItem("time", songInfo.currentTime);
@@ -164,6 +178,7 @@ const SongPlayer = ({
         <FaAngleRight onClick={handleNextClick} size="32px" />
       </div>
       <audio
+      preload="auto"
         onTimeUpdate={(e) => handleAudioPlayback(e)}
         onLoadedMetadata={(e) => handleAudioPlayback(e)}
         ref={audioRef}
