@@ -14,12 +14,12 @@ const SongPlayer = ({
   const [isLifted, setIsLifted] = useState(false);
   const [songInfo, setSongInfo] = useState(() => {
     console.log('use state initial lsetup!')
-    const time = localStorage.getItem("time")
-      ? localStorage.getItem("time")
-      : 0;
+    console.log(localStorage.getItem("time"))
+    const time = localStorage.getItem("time") ? localStorage.getItem("time") : 0
+    console.log('time variable', time)
     return {
       duration: 0,
-      currentTime: time,
+      currentTime: time
     };
   });
   const [animationPercent, setAnimationPercent] = useState(0);
@@ -108,11 +108,13 @@ const SongPlayer = ({
     );
   };
 
-  const handleInputChange = (e) => {
-    setSongInfo({
+  const handleInputChange = async (e) => {
+   await setSongInfo({
       ...songInfo,
       currentTime: e.target.value,
     });
+    audioRef.current.currentTime = songInfo.currentTime
+    console.log(audioRef.current.currentTime)
   };
 
   const handleInputMousedown = (e) => {
