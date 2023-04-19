@@ -10,28 +10,33 @@ const SongPlayer = ({
 }) => {
   const { audio } = currentSong;
   const audioRef = useRef();
+  const [isLoaded, setisLoaded] = useState(false);
   const [isLifted, setIsLifted] = useState(false);
   const [songInfo, setSongInfo] = useState(() => {
-    const time = localStorage.getItem("time")
-      ? localStorage.getItem("time")
-      : 0;
+    const time = localStorage.getItem("time") ? localStorage.getItem("time") : 0
     return {
       duration: 0,
-      currentTime: 0,
+      currentTime: time
     };
   });
   const [animationPercent, setAnimationPercent] = useState(0);
 
   const handlePlayClick = () => {
-    setIsPlaying((prevValue) => !prevValue);
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
+    if (isLoaded) {
       const playPromise = audioRef.current.play();
-      if (playPromise !== "undefined") {
-        playPromise.then(() => {
-          audioRef.current.play();
-        });
+      setIsPlaying((prevValue) => !prevValue);
+      if (isPlaying) {
+        if (playPromise !== "undefined") {
+          playPromise.then(() => {
+            audioRef.current.pause();
+          });
+        }
+      } else {
+        if (playPromise !== "undefined") {
+          playPromise.then(() => {
+            audioRef.current.play();
+          });
+        }
       }
     }
   };
@@ -47,28 +52,40 @@ const SongPlayer = ({
       const index = songs.findIndex((element) => element.id === currentSong.id);
       if (index > 0) {
         setCurrentSong(songs[index - 1]);
+        setSongInfo({
+          ...songInfo,
+          currentTime: 0,
+        });
+        setisLoaded(false)
       }
     }
   };
 
   const handleNextClick = () => {
-    const index = songs.findIndex((element) => element.id === currentSong.id);
-    if (index === songs.length - 1) {
-      setCurrentSong(songs[0]);
-    } else {
-      setCurrentSong(songs[index + 1]);
-    }
+      const index = songs.findIndex((element) => element.id === currentSong.id);
+      if (index === songs.length - 1) {
+        setCurrentSong(songs[0]);
+        setisLoaded(false)
+      } else {
+        setCurrentSong(songs[index + 1]);
+        setisLoaded(false)
+        audioRef.current.currentTime = 0;
+        setSongInfo({
+          ...songInfo,
+          currentTime: 0,
+        });
+      }
   };
 
-  const handleAudioPlayback = (e) => {
+  const handleAudioPlayback =  (e) => {
     if (!isLifted) {
-      const time =
-        e.type === "loadedmetadata"
+      const time =  e.type === "loadedmetadata"
           ? localStorage.getItem("time")
-          : e.target.currentTime;
+          : audioRef.current.currentTime;
       const duration = e.target.duration;
       if (e.type === "loadedmetadata") {
-        audioRef.current.currentTime = e.target.currentTime;
+        setisLoaded(true);
+        audioRef.current.currentTime = time;
       }
       setSongInfo((prevValue) => {
         return {
@@ -85,8 +102,8 @@ const SongPlayer = ({
     );
   };
 
-  const handleInputChange = (e) => {
-    setSongInfo({
+  const handleInputChange =  (e) => {
+      setSongInfo({
       ...songInfo,
       currentTime: e.target.value,
     });
@@ -105,19 +122,22 @@ const SongPlayer = ({
     const index = songs.findIndex((element) => element.id === currentSong.id);
 
     await setCurrentSong(songs[index + 1]);
+    setisLoaded(false)
   };
 
   useEffect(() => {
     setAnimationPercent((songInfo.currentTime / songInfo.duration) * 100);
+    localStorage.setItem("time", audioRef.current.currentTime);
     if (isPlaying) {
       const playPromise = audioRef.current.play();
       if (playPromise !== "undefined") {
-        playPromise.then(() => {
-          audioRef.current.play();
-        });
+        playPromise
+          .then(() => {
+            audioRef.current.play();
+          })
+          .catch((err) => console.error(err));
       }
     }
-    localStorage.setItem("time", songInfo.currentTime);
   }, [songInfo]);
 
   return (
@@ -164,6 +184,7 @@ const SongPlayer = ({
         <FaAngleRight onClick={handleNextClick} size="32px" />
       </div>
       <audio
+        preload="auto"
         onTimeUpdate={(e) => handleAudioPlayback(e)}
         onLoadedMetadata={(e) => handleAudioPlayback(e)}
         ref={audioRef}
