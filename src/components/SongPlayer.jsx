@@ -19,6 +19,9 @@ const SongPlayer = ({
 
   const handlePlayClick = () => {
     if (isLoaded) {
+      console.log('time at play before set', audioRef.current.currentTime)
+      audioRef.current.currentTime = songInfo.currentTime
+      console.log('time at play after set', audioRef.current.currentTime)
       const playPromise = audioRef.current.play();
       setIsPlaying((prevValue) => !prevValue);
       if (isPlaying) {
@@ -74,17 +77,14 @@ const SongPlayer = ({
   };
 
   const handleAudioPlayback =  (e) => {
-    console.log(e.type)
     if (!isLifted) {
       const time =  e.type === "loadedmetadata"
           ? localStorage.getItem("time")
           : audioRef.current.currentTime;
-          console.log('initial', time)
       const duration = e.target.duration;
       if (e.type === "loadedmetadata") {
         setisLoaded(true);
         audioRef.current.currentTime = time;
-        console.log('metea loaded with this time and set', time)
       }
       setSongInfo((prevValue) => {
         return {
