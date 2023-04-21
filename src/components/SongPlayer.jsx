@@ -19,18 +19,19 @@ const SongPlayer = ({
 
   const handlePlayClick = () => {
     if (isLoaded) {
-      console.log('time at play before set', audioRef.current.currentTime)
-      audioRef.current.currentTime = songInfo.currentTime
-      console.log('time at play after set', audioRef.current.currentTime)
-      const playPromise = audioRef.current.play();
       setIsPlaying((prevValue) => !prevValue);
       if (isPlaying) {
+        console.log('time at play before set', audioRef.current.currentTime)
+        audioRef.current.currentTime = songInfo.currentTime
+        console.log('time at play after set', audioRef.current.currentTime)
+        const playPromise = audioRef.current.play();
         if (playPromise !== "undefined") {
           playPromise.then(() => {
             audioRef.current.pause();
           });
         }
       } else {
+        const playPromise = audioRef.current.play();
         if (playPromise !== "undefined") {
           playPromise.then(() => {
             audioRef.current.play();
