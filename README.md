@@ -13,7 +13,7 @@ Chromaudio is a minimalistic music playing app that plays a hard-coded list of 7
 - Go to the previous song
 - Display the list of songs in the library
 - Switch between tracks in the playlist by clicking on the library
-- Save current song and current time using local storage
+- Save current song and using local storage
 
 ## Technologies Used
 
@@ -21,7 +21,7 @@ Chromaudio is a minimalistic music playing app that plays a hard-coded list of 7
 - SASS
 
 ## Notes and future improvements
-- While the design is responsive, some playback features behave finicky on mobile browsers
+- While the design is fully responsive, some playback features seem to behave finicky on mobile browsers
 - Add a search feature in library
 - Add volume control
 
