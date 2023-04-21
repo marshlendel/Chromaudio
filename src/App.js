@@ -11,11 +11,19 @@ function App() {
   const [currentSong, setCurrentSong] = useState(() => {
     return songs[localStorage.getItem("index")] || songs[0];
   });
+  const [songInfo, setSongInfo] = useState(() => {
+    const time = localStorage.getItem("time") ? localStorage.getItem("time") : 0
+    return {
+      duration: 0,
+      currentTime: time
+    };
+  });
   const [isPlaying, setIsPlaying] = useState(false);
   const [toggleLibrary, setToggleLibrary] = useState(false);
 
   const handleSongClick = (songInfo) => {
     setCurrentSong(songInfo);
+    setSongInfo({...songInfo, currentTime: 0})
   };
 
   const setActiveSong = (index) => {
@@ -50,6 +58,8 @@ function App() {
         setIsPlaying={setIsPlaying}
         currentSong={currentSong}
         setCurrentSong={setCurrentSong}
+        songInfo={songInfo}
+        setSongInfo={setSongInfo}
       />
       <Library
         setToggleLibrary={setToggleLibrary}

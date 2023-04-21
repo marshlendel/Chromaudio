@@ -7,18 +7,14 @@ const SongPlayer = ({
   isPlaying,
   setIsPlaying,
   songs,
+  songInfo,
+  setSongInfo
 }) => {
   const { audio } = currentSong;
   const audioRef = useRef();
   const [isLoaded, setisLoaded] = useState(false);
   const [isLifted, setIsLifted] = useState(false);
-  const [songInfo, setSongInfo] = useState(() => {
-    const time = localStorage.getItem("time") ? localStorage.getItem("time") : 0
-    return {
-      duration: 0,
-      currentTime: time
-    };
-  });
+ 
   const [animationPercent, setAnimationPercent] = useState(0);
 
   const handlePlayClick = () => {
@@ -139,12 +135,6 @@ const SongPlayer = ({
       }
     }
   }, [songInfo]);
-
-  useEffect(() => {
-      setSongInfo(
-        {...songInfo, currentTime: 0}
-      )
-  }, [currentSong]);
 
   return (
     <div className="song-controls">
