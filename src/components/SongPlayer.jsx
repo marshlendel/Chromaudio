@@ -19,16 +19,15 @@ const SongPlayer = ({
 
   const handlePlayClick = () => {
     if (isLoaded) {
+      const playPromise = audioRef.current.play();
       setIsPlaying((prevValue) => !prevValue);
       if (isPlaying) {
-        const playPromise = audioRef.current.play();
         if (playPromise !== "undefined") {
           playPromise.then(() => {
             audioRef.current.pause();
           });
         }
       } else {
-        const playPromise = audioRef.current.play();
         if (playPromise !== "undefined") {
           playPromise.then(() => {
             audioRef.current.play();
@@ -83,7 +82,6 @@ const SongPlayer = ({
       if (e.type === "loadedmetadata") {
         setisLoaded(true);
         audioRef.current.currentTime = time;
-        console.log('handleaudioplayback loaded- time', audioRef.current.currentTime)
       }
       setSongInfo((prevValue) => {
         return {
@@ -101,7 +99,6 @@ const SongPlayer = ({
   };
 
   const handleInputChange =  (e) => {
-    audioRef.current.currentTime = e.target.value
       setSongInfo({
       ...songInfo,
       currentTime: e.target.value,
@@ -114,6 +111,7 @@ const SongPlayer = ({
 
   const handleInputMouseup = (e) => {
     setIsLifted(false);
+    audioRef.current.currentTime = e.target.value;
   };
 
   const handleSongEnded = async () => {
@@ -139,9 +137,10 @@ const SongPlayer = ({
   }, [songInfo]);
 
   useEffect(() => {
-     audioRef.current.currentTime = songInfo.currentTime
-     console.log('currentSong useeffect', audioRef.current.currentTime)
-  }, [currentSong])
+    audioRef.current.currentTime = songInfo.currentTime
+    console.log('currentSong useeffect', audioRef.current.currentTime)
+ }, [currentSong])
+
 
   return (
     <div className="song-controls">
