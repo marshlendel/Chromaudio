@@ -30,6 +30,7 @@ const SongPlayer = ({
       } else {
         if (playPromise !== "undefined") {
           playPromise.then(() => {
+            console.log('ref time before play', audioRef.current.currentTime)
             audioRef.current.play();
           });
         }
