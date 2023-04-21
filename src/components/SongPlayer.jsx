@@ -141,7 +141,6 @@ const SongPlayer = ({
   }, [songInfo]);
 
   useEffect(() => {
-    console.log('time is set')
       setSongInfo(
         {...songInfo, currentTime: 0}
       )
