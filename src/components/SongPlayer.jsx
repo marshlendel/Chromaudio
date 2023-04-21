@@ -188,7 +188,7 @@ const SongPlayer = ({
         onTimeUpdate={(e) => handleAudioPlayback(e)}
         onLoadedMetadata={(e) => handleAudioPlayback(e)}
         ref={audioRef}
-        src={audio}
+        src={`/assets/songs/${currentSong.id}.mp3`}
         onEnded={handleSongEnded}
       ></audio>
     </div>
