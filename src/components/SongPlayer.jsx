@@ -140,6 +140,13 @@ const SongPlayer = ({
     }
   }, [songInfo]);
 
+  useEffect(() => {
+    console.log('time is set')
+      setSongInfo(
+        {...songInfo, currentTime: 0}
+      )
+  }, [currentSong]);
+
   return (
     <div className="song-controls">
       <div className="time-control">
