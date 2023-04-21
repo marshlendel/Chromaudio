@@ -23,7 +23,12 @@ function App() {
 
   const handleSongClick = (songInfo) => {
     setCurrentSong(songInfo);
-    setSongInfo({...songInfo, currentTime: 0})
+    setSongInfo((prevValue) => {
+      return {
+        currentTime: 0,
+        duration: isNaN(currentSong.duration) ? prevValue.duration : currentSong.duration,
+      };
+    });
   };
 
   const setActiveSong = (index) => {
