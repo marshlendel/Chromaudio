@@ -13,6 +13,7 @@ function App() {
   });
   const [songInfo, setSongInfo] = useState(() => {
     const time = localStorage.getItem("time") ? localStorage.getItem("time") : 0
+    console.log('initial setSonginfo local', time)
     return {
       duration: 0,
       currentTime: time
