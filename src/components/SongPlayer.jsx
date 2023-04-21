@@ -19,24 +19,16 @@ const SongPlayer = ({
 
   const handlePlayClick = () => {
     if (isLoaded) {
-      const playPromise = audioRef.current.play();
       setIsPlaying((prevValue) => !prevValue);
       if (isPlaying) {
-        if (playPromise !== "undefined") {
-          playPromise.then(() => {
             audioRef.current.pause();
-          });
         }
       } else {
-        if (playPromise !== "undefined") {
-          playPromise.then(() => {
             console.log('ref time before play', audioRef.current.currentTime)
             audioRef.current.play();
-          });
-        }
+    
       }
     }
-  };
 
   const handlePrevClick = ({ setSongInfo, songInfo, audioRef }) => {
     if (songInfo.currentTime >= 2) {
