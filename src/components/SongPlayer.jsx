@@ -74,14 +74,17 @@ const SongPlayer = ({
   };
 
   const handleAudioPlayback =  (e) => {
+    console.log(e.type)
     if (!isLifted) {
       const time =  e.type === "loadedmetadata"
           ? localStorage.getItem("time")
           : audioRef.current.currentTime;
+          console.log('initial', time)
       const duration = e.target.duration;
       if (e.type === "loadedmetadata") {
         setisLoaded(true);
         audioRef.current.currentTime = time;
+        console.log('metea loaded with this time and set', time)
       }
       setSongInfo((prevValue) => {
         return {
