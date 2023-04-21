@@ -78,6 +78,9 @@ const SongPlayer = ({
   };
 
   const handleAudioPlayback =  (e) => {
+    if(e.type === 'timeupdate') {
+      console.log('timeupdate to', audioRef.current.currentTime)
+    }
     if (!isLifted) {
       const time =  e.type === "loadedmetadata"
           ? localStorage.getItem("time")
