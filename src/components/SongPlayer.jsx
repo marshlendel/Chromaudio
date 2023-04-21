@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { FaPlay, FaPause, FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import { FaPlay, FaPause } from "react-icons/fa";
+import {BsFillSkipEndFill, BsFillSkipStartFill} from 'react-icons/bs'
 
 const SongPlayer = ({
   currentSong,
@@ -10,7 +11,6 @@ const SongPlayer = ({
   songInfo,
   setSongInfo
 }) => {
-  const { audio } = currentSong;
   const audioRef = useRef();
   const [isLoaded, setisLoaded] = useState(false);
   const [isLifted, setIsLifted] = useState(false);
@@ -25,14 +25,12 @@ const SongPlayer = ({
         if (playPromise !== "undefined") {
           playPromise.then(() => {
             audioRef.current.pause();
-            console.log('ref time after pause', audioRef.current.currentTime)
           })
           .catch(err => console.error(err))
         }
       } else {
         if (playPromise !== "undefined") {
           playPromise.then(() => {
-            console.log('ref time before play', audioRef.current.currentTime)
             audioRef.current.play();
           })
           .catch(err => console.error(err))
@@ -78,9 +76,6 @@ const SongPlayer = ({
   };
 
   const handleAudioPlayback =  (e) => {
-    if(e.type === 'timeupdate') {
-      console.log('timeupdate to', audioRef.current.currentTime)
-    }
     if (!isLifted) {
       const time =  e.type === "loadedmetadata"
           ? localStorage.getItem("time")
@@ -143,12 +138,6 @@ const SongPlayer = ({
     }
   }, [songInfo]);
 
-  useEffect(() => {
-    audioRef.current.currentTime = songInfo.currentTime
-    console.log('currentSong useeffect', audioRef.current.currentTime, songInfo.currentTime)
- }, [currentSong])
-
-
   return (
     <div className="song-controls">
       <div className="time-control">
@@ -181,16 +170,16 @@ const SongPlayer = ({
         <p>{getTime(songInfo.duration)}</p>
       </div>
       <div className="play-control">
-        <FaAngleLeft
+        <BsFillSkipStartFill
           onClick={() => handlePrevClick({ songInfo, setSongInfo, audioRef })}
-          size="32px"
+          size="48px"
         />
         {isPlaying ? (
           <FaPause onClick={handlePlayClick} size="32px" />
         ) : (
           <FaPlay onClick={handlePlayClick} size="32px" />
         )}
-        <FaAngleRight onClick={handleNextClick} size="32px" />
+        <BsFillSkipEndFill onClick={handleNextClick} size="48px" />
       </div>
       <audio
         preload="auto"
