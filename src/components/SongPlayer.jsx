@@ -21,7 +21,6 @@ const SongPlayer = ({
     if (isLoaded) {
       setIsPlaying((prevValue) => !prevValue);
       if (isPlaying) {
-        audioRef.current.currentTime = songInfo.currentTime
         const playPromise = audioRef.current.play();
         if (playPromise !== "undefined") {
           playPromise.then(() => {
