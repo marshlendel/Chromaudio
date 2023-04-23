@@ -32,6 +32,7 @@ function musicData() {
 
     {
       name: "Neo Surf",
+      artist: "GENER8ION, 070 Shake",
       color: ["#000000", "#40b4e3"],
       id: 4,
       active: false,
